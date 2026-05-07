@@ -1,5 +1,5 @@
 {
   "name": "lux-power-distribution-card-ita",
   "render_readme": true,
-  "filename": "dist/lux-power-distribution-card.js"
+  "filename": "src/lux-power-distribution-card.js"
 }
