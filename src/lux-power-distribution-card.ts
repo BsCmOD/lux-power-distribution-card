@@ -411,13 +411,13 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
     let diff = time_now - timestamp;
     switch (true) {
       case diff <= 2:
-        return `just now`;
+        return `adesso`;
       case diff < 60:
-        return `${Math.round(diff)} seconds ago`;
+        return `${Math.round(diff)} secondi fa`;
       case diff < 120:
-        return `1 minute ago`;
+        return `1 minuto fa`;
       case diff >= 120:
-        return `${Math.round(diff / 60)} minutes ago`;
+        return `${Math.round(diff / 60)} minuti fa`;
       default:
         return ``;
     }
@@ -672,7 +672,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
         if (this._config?.battery?.parallel_average_voltage) {
           battery_v = this.getEntityParallelStateInt(this._config.battery.voltage_entities);
           battery_v = Math.round(battery_v / this._config.inverter_count);
-          return `${battery_v} Vdc (avg)`;
+          return `${battery_v} Vdc (media)`;
         }
       } else {
         battery_v = this.getEntityStateInt(this._config.battery.voltage_entities[index]);
@@ -687,7 +687,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
     const minutes = Math.round((runtime % 1) * 60);
     switch (format) {
       case 'short':
-        return `${hours}:${minutes} remaining`;
+        return `${hours}:${minutes} rimanenti`;
       case 'long':
         return `${hours}h, ${minutes}m`;
       default:
@@ -804,7 +804,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
           solar_info = `
             <div>
               <p class="header-text">${combined_solar_flow} W</p>
-              <p class="sub-text">${combined_solar_flow > 0 ? 'PV Power' : ''}</p>
+              <p class="sub-text">${combined_solar_flow > 0 ? 'Potenza FV' : ''}</p>
             </div>
           `;
         } else if (
@@ -817,7 +817,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
             solar_info = `
               <div>
                 <p class="header-text">${total} W</p>
-                <p class="sub-text">${total > 0 ? 'PV Power' : ''}</p>
+                <p class="sub-text">${total > 0 ? 'Potenza FV' : ''}</p>
               </div>
             `;
           } else {
@@ -857,15 +857,15 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
         let sub_text = ``;
         if (battery_flow < 0) {
           header_text = `${Math.abs(battery_flow)} W`;
-          sub_text = `Discharge Power`;
+          sub_text = `Potenza di scarica`;
           battery_arrow = ARROW_RIGHT;
         } else if (battery_flow > 0) {
           header_text = `${battery_flow} W`;
-          sub_text = `Charge Power`;
+          sub_text = `Potenza di carica`;
           battery_arrow = ARROW_LEFT;
         } else {
           header_text = `0 W`;
-          sub_text = `Idle`;
+          sub_text = `Inattiva`;
           battery_arrow = ARROW_NONE;
         }
         battery_flow_info = `
@@ -901,7 +901,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
             const avail_wh = (total_cap_wh * (battery_soc - dod)) / 100;
             const rem_h = avail_wh / Math.abs(battery_flow);
             if (['bottom', 'both'].includes(this._config.battery.runtime_location)) {
-              battery_bottom_runtime = `<p id="time-info" class="header-text">${this.convertRuntimeToString(rem_h, 'long')} remaining battery usage</p>`;
+              battery_bottom_runtime = `<p id="time-info" class="header-text">${this.convertRuntimeToString(rem_h, 'long')} batteria rimanente</p>`;
             }
             if (['left', 'both'].includes(this._config.battery.runtime_location)) {
               battery_top_runtime = `<p class="header-text"> ${this.convertRuntimeToString(rem_h, 'short')} </p>`;
@@ -910,7 +910,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
             const avail_wh = (total_cap_wh * (90 - battery_soc)) / 100;
             const rem_h = avail_wh / Math.abs(battery_flow);
             if (['bottom', 'both'].includes(this._config.battery.runtime_location)) {
-              battery_bottom_runtime = `<p id="time-info" class="header-text">${this.convertRuntimeToString(rem_h, 'long')} remaining to charge to 90%</p>`;
+              battery_bottom_runtime = `<p id="time-info" class="header-text">${this.convertRuntimeToString(rem_h, 'long')} tempo rimanente per arrivare al 90%</p>`;
             }
             if (['left', 'both'].includes(this._config.battery.runtime_location)) {
               battery_top_runtime = `<p class="header-text"> ${this.convertRuntimeToString(rem_h, 'short')} </p>`;
@@ -1037,10 +1037,10 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
       let sub_text = ``;
       if (home_consumption > 0) {
         header_text = `${Math.abs(home_consumption)} W`;
-        sub_text = `Home Usage`;
+        sub_text = `Consumo`;
       } else if (backup_consumption > 0) {
         header_text = `${Math.abs(backup_consumption)} W`;
-        sub_text = `Backup Power`;
+        sub_text = `Consumo EPS`;
       } else {
         header_text = `0 W`;
         sub_text = ``;
@@ -1065,7 +1065,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
         allocated_info = `
           <div>
             <p class="header-text"> ${allocated_power} W </p>
-            <p class="sub-text"> Allocated Power </p>
+            <p class="sub-text"> Potenza allocata </p>
           </div>
         `;
       }
@@ -1095,14 +1095,14 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
               if (biggest_diff_sec < 3) {
                 const update_time = this.getEntityState(this._config.update_time.entities[oldest_update_index]);
                 if (this._config.update_time.show_datetime) {
-                  last_time_text = `<p id="time-info" class="header-text">Last update at: ${update_time}</p>`;
+                  last_time_text = `<p id="time-info" class="header-text">Ultimo aggiornamento: ${update_time}</p>`;
                 }
                 if (this._config.update_time.show_time_since) {
                   const last_time_ts = this.getEntityAttribute(
                     this._config.update_time.entities[oldest_update_index],
                     'timestamp'
                   );
-                  time_since_text = `<p id="since-info" class="header-text">Updated ${this.getTimeSince(last_time_ts)}</p>`;
+                  time_since_text = `<p id="since-info" class="header-text">Aggiornato ${this.getTimeSince(last_time_ts)}</p>`;
                 }
                 const spacer =
                   this._config.update_time.show_time_since && this._config.update_time.show_datetime ? `<p/>` : ``;
@@ -1121,7 +1121,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
                     this._config.update_time.entities[oldest_update_index],
                     'timestamp'
                   );
-                  time_since_text = `<p id="since-info" class="header-text">${alias} updated ${this.getTimeSince(last_time_ts)}</p>`;
+                  time_since_text = `<p id="since-info" class="header-text">${alias} aggiornato ${this.getTimeSince(last_time_ts)}</p>`;
                 }
                 const spacer =
                   this._config.update_time.show_time_since && this._config.update_time.show_datetime ? `<p/>` : ``;
@@ -1140,7 +1140,7 @@ class LuxPowerDistributionCard extends LitElement implements LovelaceCard {
           }
           if (this._config.update_time.show_time_since && this._config.update_time.has_timestamp_attribute) {
             const last_time_ts = this.getEntityAttribute(this._config.update_time.entities[this._index], 'timestamp');
-            time_since_text = `<p id="since-info" class="header-text">Updated ${this.getTimeSince(last_time_ts)}</p>`;
+            time_since_text = `<p id="since-info" class="header-text">Aggiornato ${this.getTimeSince(last_time_ts)}</p>`;
           }
           const spacer =
             this._config.update_time.show_time_since &&
