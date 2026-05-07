@@ -94,27 +94,27 @@ export function getStatusMessage(status_code: number): StatusMessageType {
     case 1:
       return {
         level: statusLevels.Error,
-        desc: 'Error',
+        desc: 'Errore',
       };
     case 2:
       return {
         level: statusLevels.Warning,
-        desc: 'Programming',
+        desc: 'In programmazione',
       };
     case 4:
       return {
         level: statusLevels.Clear,
-        desc: 'Normal',
+        desc: 'Normale',
       };
     case 8:
       return {
         level: statusLevels.Warning,
-        desc: 'No power to home',
+        desc: 'Casa non alimentata',
       };
     case 9:
       return {
         level: statusLevels.Clear,
-        desc: 'Normal (Selling)',
+        desc: 'Normal (vendita)',
       };
     case 10:
     case 12:
@@ -124,24 +124,24 @@ export function getStatusMessage(status_code: number): StatusMessageType {
     case 40:
       return {
         level: statusLevels.Clear,
-        desc: 'Normal',
+        desc: 'Normale',
       };
     case 17:
       return {
         level: statusLevels.Error,
-        desc: 'High temp',
+        desc: 'Alta temperatura',
       };
     case 64:
     case 136:
     case 192:
       return {
         level: statusLevels.Clear,
-        desc: 'No grid',
+        desc: 'No rete',
       };
     default:
       return {
         level: statusLevels.Warning,
-        desc: `Unknown code ${status_code}`,
+        desc: `Codice sconosciuto ${status_code}`,
       };
   }
 }
